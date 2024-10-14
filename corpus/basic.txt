@@ -1,0 +1,90 @@
+==================
+Basic output
+==================
+
+{{ variable }}
+
+---
+
+(source_file
+  (output_statement
+    (identifier)))
+
+==================
+If statement
+==================
+
+@if condition
+{
+  {{ content }}
+}
+
+---
+
+(source_file
+  (control_flow_statement
+    (if_statement
+      (identifier)
+      (block
+        (output_statement
+          (identifier))))))
+
+==================
+For loop
+==================
+
+@each item in collection
+{
+  {{ item }}
+}
+
+---
+
+(source_file
+  (control_flow_statement
+    (for_statement
+      (identifier)
+      (identifier)
+      (block
+        (output_statement
+          (identifier))))))
+
+==================
+Include statement
+==================
+
+@include('partial')
+
+---
+
+(source_file
+  (control_flow_statement
+    (include_statement
+      (string))))
+
+==================
+Comments
+==================
+
+{{-- This is a comment --}}
+// This is another comment
+/* This is a
+   multiline comment */
+
+---
+
+(source_file
+  (comment)
+  (comment)
+  (comment))
+
+==================
+Raw content
+==================
+
+This is some raw content
+
+---
+
+(source_file
+  (raw_content))
