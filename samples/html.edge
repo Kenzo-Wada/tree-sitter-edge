@@ -1,0 +1,90 @@
+{{-- This is a sample Edge.js file to test syntax highlighting --}}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ pageTitle }}</title>
+</head>
+<body>
+    <h1>{{{ safeTitle }}}</h1>
+
+    {{-- Control Structures --}}
+    @if(user.isLoggedIn)
+        <p>Welcome, {{ user.name }}!</p>
+    @elseif(user.isGuest)
+        <p>Welcome, Guest!</p>
+    @else
+        <p>Please log in.</p>
+    @end
+
+    <ul>
+    @each(item in items)
+        <li>{{ item.name }} - ${{ item.price }}</li>
+    @end
+    </ul>
+
+    @for(i of range(1, 5))
+        <p>This is paragraph {{ i }}</p>
+    @end
+
+    {{-- Include statement --}}
+    @include('partials/header')
+
+    {{-- Component --}}
+    @component('components/alert')
+        <p>This is an alert message!</p>
+    @end
+
+    {{-- JavaScript-like expressions --}}
+    {{ 2 + 2 }}
+    {{ isTrue ? 'Yes' : 'No' }}
+    {{ ['apple', 'banana', 'cherry'].join(', ') }}
+
+    {{-- Object and array syntax --}}
+    @set('user', { name: 'John', age: 30 })
+    @set('fruits', ['apple', 'banana', 'cherry'])
+
+    <p>User: {{ user.name }}, Age: {{ user.age }}</p>
+    <p>Fruits: {{ fruits.join(', ') }}</p>
+
+    {{-- Function calls --}}
+    {{ uppercase('hello world') }}
+
+    {{-- Safe output --}}
+    {{{ '<strong>This HTML is rendered</strong>' }}}
+
+    {{-- Different comment styles --}}
+    {{-- Edge.js comment --}}
+    // Single-line JavaScript-style comment
+    /* 
+       Multi-line
+       JavaScript-style comment
+    */
+
+    {{-- Raw output --}}
+    @{{ This will be output as-is, not processed }}
+
+    {{-- Layout literal --}}
+    <p>This is a layout literal. It can contain any HTML or text content.</p>
+
+    {{-- Conditional rendering --}}
+    {{ isAdmin ? '<admin-panel></admin-panel>' : '' }}
+
+    {{-- Self-closing tags --}}
+    <input type="text" value="{{ inputValue }}" />
+
+    {{-- Escaping special characters --}}
+    <p>This is a quote: &quot;{{ quoteText }}&quot;</p>
+
+    <script>
+        // JavaScript within HTML
+        const app = {
+            init: function() {
+                console.log('App initialized');
+            }
+        };
+        app.init();
+    </script>
+</body>
+</html>

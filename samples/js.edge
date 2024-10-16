@@ -1,0 +1,101 @@
+{{-- This is a sample Edge.js file for generating JavaScript code --}}
+
+// Generated JavaScript file
+// Date: {{ new Date().toISOString() }}
+
+{{-- Define some variables --}}
+@set('className', 'MyAwesomeClass')
+@set('methods', ['init', 'update', 'render'])
+
+class {{ className }} {
+  constructor() {
+    {{-- Use safe output for potentially unsafe content --}}
+    this.version = '{{{ version }}}';
+    this.config = {
+      apiKey: '{{ apiKey }}',
+      debug: {{ debug ? 'true' : 'false' }}
+    };
+  }
+
+  {{-- Loop through methods --}}
+  @each(method in methods)
+  {{ method }}() {
+    console.log('{{ className }}.{{ method }} called');
+    {{-- Conditional output --}}
+    @if(method === 'init')
+    this.initialized = true;
+    @end
+  }
+  @end
+
+  {{-- Conditional method --}}
+  @if(includeExtraMethod)
+  extraMethod() {
+    return 'This is an extra method';
+  }
+  @end
+}
+
+{{-- Generate an array --}}
+const dataArray = [
+  @each((item, index) in items)
+  {
+    id: {{ index + 1 }},
+    name: '{{ item.name }}',
+    value: {{ item.value }},
+  }{{ index !== items.length - 1 ? ',' : '' }}
+  @end
+];
+
+{{-- Include an external JavaScript file --}}
+@include('partials/helperFunctions.js')
+
+{{-- Use a component to generate a complex object --}}
+@component('components/configObject')
+  @slot('main')
+    // Main configuration
+    const mainConfig = {
+      theme: '{{ theme }}',
+      language: '{{ language }}',
+    };
+  @end
+
+  @slot('advanced')
+    // Advanced settings
+    const advancedSettings = {
+      performance: {{ performance }},
+      security: {
+        enabled: {{ security.enabled }},
+        level: '{{ security.level }}',
+      },
+    };
+  @end
+@end
+
+// Initialize the class
+const myInstance = new {{ className }}();
+
+{{-- Conditional function definition --}}
+@if(includeLegacySupport)
+function legacyMethod() {
+  console.warn('Legacy method called');
+  {{-- Raw output --}}
+  @{{ This will be output as-is, not processed }}
+}
+@end
+
+// Event listener
+document.addEventListener('DOMContentLoaded', () => {
+  {{-- Use JavaScript template literals within Edge.js --}}
+  console.log(`{{ className }} initialized with version ${myInstance.version}`);
+
+  {{-- Loop to generate repetitive code --}}
+  @for(i of range(1, 3))
+  setTimeout(() => {
+    console.log('Timeout {{ i }} executed');
+  }, {{ i * 1000 }});
+  @end
+});
+
+{{-- Export the class --}}
+export default {{ className }};
