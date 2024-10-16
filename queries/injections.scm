@@ -9,7 +9,7 @@
 
 ; Inject typescript into control structures
 ((if_statement
-  condition: (_) @injection.content)
+  (_) @injection.content)
  (#set! injection.language "typescript"))
 
 ((for_statement
@@ -23,12 +23,3 @@
 ; Inject HTML into layout literals
 ((layout_literal) @injection.content
  (#set! injection.language "html"))
-
-; Inject typescript into script tags
-((layout_literal
-  (element
-    (start_tag
-      (tag_name) @_tag
-      (#eq? @_tag "script"))
-    (text) @injection.content))
- (#set! injection.language "typescript"))

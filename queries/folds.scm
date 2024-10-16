@@ -8,12 +8,14 @@
 ; Fold components
 (component) @fold
 
-; Fold HTML elements in layout literals
-(layout_literal
-  (element) @fold)
+; Fold layout literals
+(layout_literal) @fold
 
 ; Fold objects and arrays
 [
   (object)
   (array)
 ] @fold
+
+; Fold function calls
+(function_call) @fold

@@ -8,83 +8,65 @@
 (comment) @comment
 
 ; Keywords and identifiers
-(identifier) @variable
 ((identifier) @keyword
  (#match? @keyword "^(if|else|elseif|end|for|of|each|in|include|component)$"))
 
-; Function calls
+((identifier) @variable.builtin
+ (#eq? @variable.builtin "this"))
+
+; Function calls and helpers
 (function_call
-  function: (identifier) @function)
+  (identifier) @function)
+
+((function_call
+  (identifier) @keyword.conditional)
+ (#match? @keyword.conditional "^(if|elseif)$"))
+
+((function_call
+  (identifier) @keyword)
+ (#match? @keyword "^(component|include)$"))
 
 ; Control structures
 (if_statement
-  "if" @keyword.conditional
-  "(" @punctuation.bracket
-  ")" @punctuation.bracket)
-(else_if_clause
-  "elseif" @keyword.conditional
-  "(" @punctuation.bracket
-  ")" @punctuation.bracket)
-(else_clause
-  "else" @keyword.conditional)
+  (_) @condition)
+
+(else_if_clause)
+
+(else_clause)
+
 (for_statement
-  "for" @keyword.repeat
-  "(" @punctuation.bracket
-  "of" @keyword
-  ")" @punctuation.bracket)
+  (identifier) @variable)
+
 (each_statement
-  "each" @keyword.repeat
-  "(" @punctuation.bracket
-  "in" @keyword
-  ")" @punctuation.bracket)
+  (identifier) @variable)
 
 ; Directives
 (include_statement
-  "@include" @keyword.import
-  "(" @punctuation.bracket
-  ")" @punctuation.bracket)
+  "@include" @keyword.import)
+
 (component
-  "@component" @keyword
-  "(" @punctuation.bracket
-  ")" @punctuation.bracket)
+  "@component" @keyword)
 
 ; Output statements
 (output_statement
-  "{{" @punctuation.special
-  "}}" @punctuation.special)
+  ["{{" "}}"] @punctuation.special)
+
 (safe_output_statement
-  "{{{" @punctuation.special
-  "}}}" @punctuation.special)
+  ["{{{" "}}}"] @punctuation.special)
 
 ; Objects and arrays
 (object
-  "{" @punctuation.bracket
-  "}" @punctuation.bracket)
+  ["{" "}"] @punctuation.bracket)
+
 (object_pair
-  key: (identifier) @property)
+  (identifier) @property)
+
 (array
-  "[" @punctuation.bracket
-  "]" @punctuation.bracket)
+  ["[" "]"] @punctuation.bracket)
 
-; Operators
-"=" @operator
-"+" @operator
-"-" @operator
-"*" @operator
-"/" @operator
-"%" @operator
-"<" @operator
-">" @operator
-"<=" @operator
-">=" @operator
-"==" @operator
-"!=" @operator
-"&&" @operator
-"||" @operator
-"!" @operator
+; Operators and punctuation (generic approach)
+((identifier) @operator
+ (#match? @operator "^(=|\+|-|\*|/|%|<|>|<=|>=|==|!=|&&|\|\||!|\?|:)$"))
 
-; Punctuation
-"," @punctuation.delimiter
-"." @punctuation.delimiter
-":" @punctuation.delimiter
-"?" @punctuation.special
+; Variables
+(identifier) @variable
